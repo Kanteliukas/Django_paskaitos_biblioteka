@@ -28,7 +28,6 @@ def fake(request):
 urlpatterns = [
     path("library/", include("library.urls")),
     path("admin/", admin.site.urls),
-    path("", RedirectView.as_view(url="library/", permanent=False)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('tinymce/', include('tinymce.urls')),
 ] + (

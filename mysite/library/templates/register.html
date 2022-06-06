@@ -2,6 +2,11 @@
 
 <div class="container register">
     <h3>Registracija</h3><br/>
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %} {% endif %}
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -27,10 +32,6 @@
         </div>
         <button type="submit" class="btn btn-primary register-button">Registruotis</button>
     </form>
-    <p>Jeigu užsiregistravote anksčiau, <a href="/login"><strong>prisijunkite.</strong></a></p>
+    <p>Jeigu užsiregistravote anksčiau, <a href="{% url 'login' %}"><strong>prisijunkite.</strong></a></p>
 </div>
-{% if messages %} {% for message in messages %}
-<div class="alert alert-danger" role="alert">
-    {{ message }}
-</div>
-{% endfor %} {% endif %} {% endblock %}
+{% endblock %}

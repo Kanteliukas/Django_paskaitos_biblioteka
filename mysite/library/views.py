@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.http import HttpResponse
-from .models import Book, Author, BookInstance, Genre, BookInstanceQuerySet
+from . models import Book, Author, BookInstance
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -8,7 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import BookReviewForm
+from django.utils.translation import gettext_lazy as _
+from . forms import BookReviewForm
 from django.views.generic.edit import FormMixin
 
 def index(request):
@@ -74,29 +74,30 @@ def search(request):
 @csrf_protect
 def register(request):
     if request.method == "POST":
-        # pasiimame reikšmes iš registracijos formos
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        password2 = request.POST['password2']
-        # tikriname, ar sutampa slaptažodžiai
-        if password == password2:
-            # tikriname, ar neužimtas username
-            if User.objects.filter(username=username).exists():
-                messages.error(request, f'Vartotojo vardas {username} užimtas!')
-                return redirect('register')
-            else:
-                # tikriname, ar nėra tokio pat email
-                if User.objects.filter(email=email).exists():
-                    messages.error(request, f'Vartotojas su el. paštu {email} jau užregistruotas!')
-                    return redirect('register')
-                else:
-                    # jeigu viskas tvarkoje, sukuriame naują vartotoją
-                    User.objects.create_user(username=username, email=email, password=password)
-        else:
-            messages.error(request, 'Slaptažodžiai nesutampa!')
+        # duomenu surinkimas
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
+        # validuosim forma, tikrindami ar sutampa slaptažodžiai, ar egzistuoja vartotojas
+        error = False
+        if not password or password != password2:
+            messages.error(request, _('Slaptažodžiai nesutampa arba neįvesti.'))
+            error = True
+        if not username or User.objects.filter(username=username).exists():
+            messages.error(request, _('Vartotojas {} jau egzistuoja arba neįvestas.').format(username))
+            error = True
+        if not email or User.objects.filter(email=email).exists():
+            messages.error(request, _('Vartotojas su el.praštu {} jau egzistuoja arba neįvestas.').format(email))
+            error = True
+        if error:
             return redirect('register')
+        else:
+            User.objects.create_user(username=username, email=email, password=password)
+            messages.success(request, _('Vartotojas {} užregistruotas sėkmingai. Galite prisijungti').format(username))
+            return redirect('index')
     return render(request, 'register.html')
+
 
 class BookListView(generic.ListView):
     model = Book
@@ -121,7 +122,6 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
         # BookInstance.objects.taken_books_read_by_me_ordered_by_due_back()
         # BookInstance.objects.taken().order_by_due_back().read_by_me()
         # BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
-
         return BookInstance.objects.filter(reader=self.request.user).taken().order_by_due_back()
 
 class BookDetailView(FormMixin, generic.DetailView):
@@ -151,4 +151,3 @@ class BookDetailView(FormMixin, generic.DetailView):
         form.instance.reviewer = self.request.user
         form.save()
         return super(BookDetailView, self).form_valid(form)
-

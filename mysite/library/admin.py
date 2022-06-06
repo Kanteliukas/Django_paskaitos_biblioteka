@@ -31,8 +31,6 @@ class BookReviewAdmin(admin.ModelAdmin):
     list_display = ('book', 'date_created', 'reviewer', 'content')
 
 
-
-
 admin.site.register(Book, BookAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Genre)
