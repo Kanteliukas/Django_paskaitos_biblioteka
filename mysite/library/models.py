@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from tinymce.models import HTMLField
 
+
 class Genre(models.Model):
     name = models.CharField('Pavadinimas', max_length=200, help_text='Įveskite knygos žanrą (pvz. detektyvas)')
     
@@ -14,6 +15,7 @@ class Genre(models.Model):
     class Meta:
         verbose_name = 'Žanras'
         verbose_name_plural = 'Žanrai'
+
 
 class Book(models.Model):
     """Modelis reprezentuoja knygą (bet ne specifinę knygos kopiją)"""
@@ -32,9 +34,10 @@ class Book(models.Model):
         return reverse('book-detail', args=[str(self.id)])
 
     def display_genre(self):
-            return ', '.join(genre.name for genre in self.genre.all()[:3])
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
 
     display_genre.short_description = 'Žanras'
+
 
 class BookInstanceQuerySet(models.QuerySet):
     def read_by_me(self, user):
@@ -48,6 +51,7 @@ class BookInstanceQuerySet(models.QuerySet):
 
     def taken_books_read_by_me_ordered_by_due_back(self, user):
         return self.taken().read_by_me(user).order_by_due_back()
+
 
 class BookInstance(models.Model):
     """Modelis, aprašantis konkrečios knygos kopijos būseną"""
@@ -84,6 +88,7 @@ class BookInstance(models.Model):
     def __str__(self):
         return f'{self.id} ({self.book.title})'
 
+
 class Author(models.Model):
     """Model representing an author."""
     first_name = models.CharField('Vardas', max_length=100)
@@ -105,6 +110,7 @@ class Author(models.Model):
         return ', '.join(book.title for book in self.books.all()[:3])
 
     display_books.short_description = 'Knygos'
+
 
 class BookReview(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True, blank=True)

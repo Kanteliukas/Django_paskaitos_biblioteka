@@ -1,6 +1,5 @@
 venv*
 mysite/db.sqlite3
-mysite/mysite/__pycache__*
-mysite/library/__pycache__*
+__pycache__/
 mysite/mysite/email_settings.py
-mysite/library/media*
+mysite/media/*
