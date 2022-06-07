@@ -37,6 +37,9 @@
                 <input name="query" class="form-control" type="text" placeholder="Paieška">
               </form>
             </li>
+            {% if user.is_authenticated and user.is_superuser %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
           {% endblock navigation %}</ul>
         </div>
       </div>
