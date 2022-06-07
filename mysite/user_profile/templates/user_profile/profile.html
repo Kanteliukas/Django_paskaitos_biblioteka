@@ -5,7 +5,13 @@
     <img class="rounded-circle account-img img-fluid" src="{{ user.profile.picture.url }}">
     <div>
         <h2 class="account-heading">{{ user.username }}</h2>
-        <p class="text-secondary">{{ user.email }}</p>
+        {% if user.first_name or user.last_name %}
+            <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <p class="text-secondary">{{ user.email }}</p>
+            <p class="text-secondary"><a href="{% url 'my-profile-update' %}">Update Profile</a></p>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}
