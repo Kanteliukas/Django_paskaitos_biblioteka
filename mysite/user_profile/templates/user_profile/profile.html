@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block content %}
 <div class="container">
     <img class="rounded-circle account-img img-fluid" src="{{ user.profile.picture.url }}">
@@ -10,7 +10,7 @@
         {% endif %}
         {% if user.is_authenticated %}
             <p class="text-secondary">{{ user.email }}</p>
-            <p class="text-secondary"><a href="{% url 'my-profile-update' %}">Update Profile</a></p>
+            <p class="text-secondary"><a href="{% url 'my-profile-update' %}">{% trans "update Profile"|capfirst %}</a></p>
         {% endif %}
     </div>
 </div>

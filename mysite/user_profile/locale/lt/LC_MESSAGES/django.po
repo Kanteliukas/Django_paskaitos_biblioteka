@@ -8,17 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 16:07+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2022-06-08 17:11+0000\n"
+"PO-Revision-Date: 2022-06-08 17:11+0000\n"
+"Last-Translator: Kestutis Januskevicius <infohata@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
 #: user_profile/models.py:16
 msgid "user"
@@ -35,3 +34,16 @@ msgstr "vartotojo profilis"
 #: user_profile/models.py:39
 msgid "user profiles"
 msgstr "vartotojo profiliai"
+
+#: user_profile/templates/user_profile/profile.html:13
+#| msgid "user profile"
+msgid "update Profile"
+msgstr "atnaujinti profilį"
+
+#: user_profile/templates/user_profile/profile_update.html:5
+msgid "Updating Profile of {{ user }}"
+msgstr "Vartotojo {{ user }} profilio atnaujinimas"
+
+#: user_profile/templates/user_profile/profile_update.html:11
+msgid "update"
+msgstr "atnaujinti"
