@@ -1,17 +1,17 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block content %}
-  <h1>Rajono biblioteka</h1>
-  <p>Sveiki atvykę į knygų rojų!</p>  
-  <p>Šiuo metu turime:</p>
+  <h1>{% trans "regional library"|capfirst %}</h1>
+  <p>{% blocktrans %}Welcome to book paradise{% endblocktrans %}</p>
+  <p>{% trans "we have now"|capfirst %}:</p>
   <ul>
     {# some text #}
-    <li><strong>Knygų:</strong> {{ num_books }}</li>
-    <li><strong>Egzempliorių:</strong> {{ num_instances }}</li>
+    <li><strong>{% trans "books"|capfirst %}:</strong> {{ num_books }}</li>
+    <li><strong>{% trans "copies"|capfirst %}:</strong> {{ num_instances }}</li>
     {% comment 'comment_name' %}
-    <li><strong>Laisvų egzempliorių:</strong> {{ num_instances_available }}</li>
-    <li><strong>Autorių:</strong> {{ num_authors }}</li>
+    <li><strong>{% trans "available copies"|capfirst %}:</strong> {{ num_instances_available }}</li>
+    <li><strong>{% trans "authors" %}:</strong> {{ num_authors }}</li>
     {% endcomment %}
   </ul>  
-  <p>Čia jūs lankotes {{ num_visits }}-ą kartą.</p>
+  <p>{% blocktrans %}You're comping here for the {{ num_visits }} time.{% endblocktrans %}</p>
 {% endblock %}

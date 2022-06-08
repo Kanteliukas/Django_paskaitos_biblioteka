@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 15:30+0000\n"
+"POT-Creation-Date: 2022-06-08 16:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,9 +56,46 @@ msgstr "prisijungti"
 msgid "sign up"
 msgstr "registruotis"
 
+#: library/templates/base.html:36
+msgid "search"
+msgstr "ieškoti"
+
 #: library/templates/base.html:40
 msgid "admin"
 msgstr "adminas"
+
+#: library/templates/index.html:4
+msgid "regional library"
+msgstr "rajono biblioteka"
+
+#: library/templates/index.html:5
+msgid "Welcome to book paradise"
+msgstr "Sveiki atvykę į knygų rojų!"
+
+#: library/templates/index.html:6
+msgid "we have now"
+msgstr "šiuo metu turime"
+
+#: library/templates/index.html:9
+msgid "books"
+msgstr "knygos"
+
+#: library/templates/index.html:10
+msgid "copies"
+msgstr "egzemplioriai"
+
+#: library/templates/index.html:12
+msgid "available copies"
+msgstr "prieinami egzemplioriai"
+
+#: library/templates/index.html:13
+msgid "authors"
+msgstr "autoriai"
+
+#: library/templates/index.html:16
+#, python-format
+msgid "You're comping here for the %(num_visits)s time."
+msgstr "Jūs čia lankotės %(num_visits)s-ą kartą."
 
 #: library/views.py:85
 msgid "Slaptažodžiai nesutampa arba neįvesti."
