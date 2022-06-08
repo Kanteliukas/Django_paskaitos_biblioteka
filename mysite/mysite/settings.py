@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tinymce',
     'crispy_forms',
+    'rosetta',
 ]
 
 MIDDLEWARE = [
