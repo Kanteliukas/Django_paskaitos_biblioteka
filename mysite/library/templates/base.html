@@ -25,23 +25,32 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'books' %}">Visos knygos</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'authors' %}">Visi autoriai</a></li>
             {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'my-borrowed'%}">Mano knygos</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'logout'%}?next=/library">Atsijungti</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'my-borrowed' %}">Mano knygos</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'my-profile' %}">Profilis</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'index' %}">Atsijungti</a></li>
             {% else %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'login'%}?next={{request.path}}">Prisijungti</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'register'%}">Registruotis</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={{request.path}}">Prisijungti</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Registruotis</a></li>
             {% endif %}
             <li>
               <form action="{% url 'search' %}" method="get" class="form-inline my-2 my-md-0">
                 <input name="query" class="form-control" type="text" placeholder="Paieška">
               </form>
             </li>
+            {% if user.is_authenticated and user.is_superuser %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
           {% endblock navigation %}</ul>
         </div>
       </div>
     </nav>
   </header>
-  <div class="container">{% block content %}{% endblock %}</div>
+  <div class="container">
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %} {% endif %}
+    {% block content %}{% endblock %}</div>
 </body>
-
 </html>
