@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 16:07+0000\n"
+"POT-Creation-Date: 2022-06-08 16:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,114 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
+
+#: library/models.py:11
+msgid "name"
+msgstr "pavadinimas"
+
+#: library/models.py:11
+msgid "Name of the genre (for example: detective, sci-fi, horror...)"
+msgstr "Įveskite knygos žanrą (pvz. detektyvas)"
+
+#: library/models.py:17 library/models.py:27 library/models.py:39
+msgid "genre"
+msgstr "žanras"
+
+#: library/models.py:18
+msgid "genres"
+msgstr "žanrai"
+
+#: library/models.py:23
+msgid "title"
+msgstr "pavadinimas"
+
+#: library/models.py:24
+msgid "author"
+msgstr "autorius"
+
+#: library/models.py:25 library/models.py:96
+msgid "description"
+msgstr "aprašymas"
+
+#: library/models.py:25
+msgid "Short book description"
+msgstr "Trumpas knygos aprašymas"
+
+#: library/models.py:26
+msgid ""
+"13 symbols: <a href=\"https://www.isbn-international.org/content/what-isbn"
+"\">ISBN code</a>"
+msgstr ""
+"13 simbolių: <a href=\"https://www.isbn-international.org/content/what-isbn"
+"\">ISBN kodas</a>"
+
+#: library/models.py:27
+msgid "choose genre(s) for this book"
+msgstr "pasirinkite žanrą/-us šiai knygai"
+
+#: library/models.py:28
+msgid "cover"
+msgstr "viršelis"
+
+#: library/models.py:59
+msgid "Unique ID for each book instance"
+msgstr "Unikaslus ID kiekvienai knygos kopijai"
+
+#: library/models.py:60 library/models.py:115
+msgid "book"
+msgstr "knygos"
+
+#: library/models.py:61
+msgid "due back"
+msgstr "bus prieinama"
+
+#: library/models.py:62
+msgid "user"
+msgstr "vartotojas"
+
+#: library/models.py:65
+msgid "Managed"
+msgstr "Administruojama"
+
+#: library/models.py:66
+msgid "Taken"
+msgstr "Paimta"
+
+#: library/models.py:67
+msgid "Available"
+msgstr "Prieinama"
+
+#: library/models.py:68
+msgid "Reserved"
+msgstr "Rezervuota"
+
+#: library/models.py:76
+msgid "status"
+msgstr "statusas"
+
+#: library/models.py:94
+msgid "first name"
+msgstr "vardas"
+
+#: library/models.py:95
+msgid "last name"
+msgstr "pavardė"
+
+#: library/models.py:111 library/templates/index.html:9
+msgid "books"
+msgstr "knygos"
+
+#: library/models.py:116
+msgid "reviewer"
+msgstr "skaitytojas"
+
+#: library/models.py:117
+msgid "date created"
+msgstr "sukūrimo data"
+
+#: library/models.py:118
+msgid "review"
+msgstr "peržiūra"
 
 #: library/templates/base.html:5
 msgid "library"
@@ -75,10 +183,6 @@ msgstr "Sveiki atvykę į knygų rojų!"
 #: library/templates/index.html:6
 msgid "we have now"
 msgstr "šiuo metu turime"
-
-#: library/templates/index.html:9
-msgid "books"
-msgstr "knygos"
 
 #: library/templates/index.html:10
 msgid "copies"
