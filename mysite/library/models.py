@@ -46,6 +46,9 @@ class BookInstanceQuerySet(models.QuerySet):
     def taken(self):
         return self.filter(status__exact="p")
 
+    def reserved_or_taken(self):
+        return self.filter(models.Q(status__exact="p") | models.Q(status__exact="r"))
+
     def order_by_due_back(self):
         return self.order_by("due_back")
 
