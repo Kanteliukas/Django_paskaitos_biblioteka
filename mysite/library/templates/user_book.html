@@ -15,6 +15,11 @@
         <li class="list-group-item {% if object.is_overdue %}text-danger{% endif %}">
             {% trans "return term"|capfirst %}: {{ object.due_back }}
         </li>
+        <li class="list-group-item">
+            {% if object.reader == user and not object.is_overdue %}
+                <a class="btn btn-primary" href="{% url 'my-book-update' object.id %}">{% trans "take/extend"|capfirst %}</a>
+            {% endif %}
+        </li>
     </ul>
 </div>
 {% endblock content %}

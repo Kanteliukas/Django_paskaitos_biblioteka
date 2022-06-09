@@ -7,7 +7,11 @@
         {% csrf_token %}
         {{ form|crispy }}
         <div class="form-group">
-            <button class="btn btn-primary">{% trans "reserve" %}</button>
+            {% if is_update %}
+                <button class="btn btn-primary">{% trans "take or extend"|capfirst %}</button>
+            {% else %}
+                <button class="btn btn-primary">{% trans "reserve"|capfirst %}</button>
+            {% endif %}
         </div>
     </form>
 </div>

@@ -3,7 +3,7 @@ from . models import Book, Author, BookInstance
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
@@ -168,7 +168,7 @@ class BookDetailView(FormMixin, generic.DetailView):
         return super(BookDetailView, self).form_valid(form)
 
 
-class BookByUserCreateView(generic.CreateView):
+class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
     model = BookInstance
     fields = ('book', 'due_back', )
     success_url = reverse_lazy('my-borrowed')
@@ -186,3 +186,28 @@ class BookByUserCreateView(generic.CreateView):
             initial['book'] = book_id
         initial['due_back'] = date.today() + timedelta(days=3)
         return initial
+
+
+class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = BookInstance
+    fields = ('book', 'due_back', )
+    success_url = reverse_lazy('my-borrowed')
+    template_name = 'user_book_form.html'
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        form.instance.status = 'p'
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = True
+        return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['due_back'] = date.today() + timedelta(days=7)
+        return initial
+
+    def test_func(self):
+        return self.request.user == self.get_object().reader and not self.get_object().is_overdue
