@@ -19,6 +19,9 @@
             {% if object.reader == user and not object.is_overdue %}
                 <a class="btn btn-primary" href="{% url 'my-book-update' object.id %}">{% trans "take/extend"|capfirst %}</a>
             {% endif %}
+            {% if object.reader == user %}
+                <a class="btn btn-warning" href="{% url 'my-book-delete' object.id %}">{% trans "return/lose"|capfirst %}</a>
+            {% endif %}
         </li>
     </ul>
 </div>

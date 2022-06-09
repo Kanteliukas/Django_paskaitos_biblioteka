@@ -177,6 +177,7 @@ class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.reader = self.request.user
         form.instance.status = 'r'
+        messages.success(self.request, f'{_("book reserved until").capitalize()} {str(form.instance.due_back)}')
         return super().form_valid(form)
 
     def get_initial(self):
@@ -197,6 +198,7 @@ class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Upda
     def form_valid(self, form):
         form.instance.reader = self.request.user
         form.instance.status = 'p'
+        messages.success(self.request, f'{_("book taken until").capitalize()} {str(form.instance.due_back)}')
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -211,3 +213,16 @@ class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Upda
 
     def test_func(self):
         return self.request.user == self.get_object().reader and not self.get_object().is_overdue
+
+
+class BookByUserDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = BookInstance
+    success_url = reverse_lazy('my-borrowed')
+    template_name = 'user_book_delete.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, f'{_("book successfully returned or lost").capitalize()}')
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user == self.get_object().reader
