@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+    <h1>{% trans "my book"|capfirst %}</h1>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <img class="rounded-circle" src="{{ object.reader.profile.picture.url }}" width="50">
+            {% trans "reader"|capfirst %}: {{ object.reader }}<br>
+        </li>
+        <li class="list-group-item">
+            <h3>{{ object.book.title }}</h3>
+            <h5>{{ object.book.author }}</h5>
+        </li>
+        <li class="list-group-item {% if object.is_overdue %}text-danger{% endif %}">
+            {% trans "return term"|capfirst %}: {{ object.due_back }}
+        </li>
+    </ul>
+</div>
+{% endblock content %}

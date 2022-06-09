@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from . forms import BookReviewForm
 from django.views.generic.edit import FormMixin
 
+
 def index(request):
     
     # # Suskaičiuokime keletą pagrindinių objektų
@@ -45,6 +46,7 @@ def index(request):
     response = render(request, 'index.html', context=context)
     return response
 
+
 def authors(request):
     paginator = Paginator(Author.objects.all(), 2)
     page_number = request.GET.get('page')
@@ -55,9 +57,11 @@ def authors(request):
     }
     return render(request, 'authors.html', context=context)
 
+
 def author(request, author_id):
     single_author = get_object_or_404(Author, pk=author_id)
     return render(request, 'author.html', {'author': single_author})
+
 
 def search(request):
     """
@@ -70,6 +74,7 @@ def search(request):
     query_filter = Q(title__icontains=query) | Q(summary__icontains=query)
     search_results = Book.objects.filter(query_filter)
     return render(request, 'search.html', {'books': search_results, 'query': query})
+
 
 @csrf_protect
 def register(request):
@@ -113,8 +118,10 @@ class BookListView(generic.ListView):
     def get_queryset(self):
         return Book.objects.all()[:3] 
 
+
 class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     model = BookInstance
+    context_object_name = 'books'
     template_name ='user_books.html'
     paginate_by = 10
     
@@ -123,6 +130,12 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
         # BookInstance.objects.taken().order_by_due_back().read_by_me()
         # BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
         return BookInstance.objects.filter(reader=self.request.user).taken().order_by_due_back()
+
+
+class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
+    model = BookInstance
+    template_name = 'user_book.html'
+
 
 class BookDetailView(FormMixin, generic.DetailView):
     model = Book
