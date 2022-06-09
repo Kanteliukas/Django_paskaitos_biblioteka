@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from . forms import BookReviewForm
+from . forms import BookReviewForm, BookInstanceForm
 from django.views.generic.edit import FormMixin
 from datetime import date, timedelta
 
@@ -170,7 +170,8 @@ class BookDetailView(FormMixin, generic.DetailView):
 
 class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
     model = BookInstance
-    fields = ('book', 'due_back', )
+    # fields = ('book', 'due_back', )
+    form_class = BookInstanceForm
     success_url = reverse_lazy('my-borrowed')
     template_name = 'user_book_form.html'
 
@@ -191,7 +192,8 @@ class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
 
 class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = BookInstance
-    fields = ('book', 'due_back', )
+    # fields = ('book', 'due_back', )
+    form_class = BookInstanceForm
     success_url = reverse_lazy('my-borrowed')
     template_name = 'user_book_form.html'
 
