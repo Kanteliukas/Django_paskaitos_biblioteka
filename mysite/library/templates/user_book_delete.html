@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+    <h1>{% trans "returning or losing a book"|capfirst %}</h1>
+    <form method="post" action="">
+        {% trans "confirm that you are returning this book or book got lost"|capfirst %}
+        {% csrf_token %}
+        <div class="form-group">
+            <button class="btn btn-danger">{% trans "return or lose"|capfirst %}</button>
+            <a class="btn btn-secondary" href="{% url 'my-borrowed' %}">{% trans "change my mind"|capfirst %}</a>
+        </div>
+    </form>
+</div>
+{% endblock content %}

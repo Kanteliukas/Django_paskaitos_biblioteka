@@ -1,15 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect
 from . models import Book, Author, BookInstance
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from . forms import BookReviewForm
+from . forms import BookReviewForm, BookInstanceForm
 from django.views.generic.edit import FormMixin
+from datetime import date, timedelta
+
 
 def index(request):
     
@@ -45,6 +48,7 @@ def index(request):
     response = render(request, 'index.html', context=context)
     return response
 
+
 def authors(request):
     paginator = Paginator(Author.objects.all(), 2)
     page_number = request.GET.get('page')
@@ -55,9 +59,11 @@ def authors(request):
     }
     return render(request, 'authors.html', context=context)
 
+
 def author(request, author_id):
     single_author = get_object_or_404(Author, pk=author_id)
     return render(request, 'author.html', {'author': single_author})
+
 
 def search(request):
     """
@@ -70,6 +76,7 @@ def search(request):
     query_filter = Q(title__icontains=query) | Q(summary__icontains=query)
     search_results = Book.objects.filter(query_filter)
     return render(request, 'search.html', {'books': search_results, 'query': query})
+
 
 @csrf_protect
 def register(request):
@@ -113,8 +120,10 @@ class BookListView(generic.ListView):
     def get_queryset(self):
         return Book.objects.all()[:3] 
 
+
 class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     model = BookInstance
+    context_object_name = 'books'
     template_name ='user_books.html'
     paginate_by = 10
     
@@ -122,7 +131,13 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
         # BookInstance.objects.taken_books_read_by_me_ordered_by_due_back()
         # BookInstance.objects.taken().order_by_due_back().read_by_me()
         # BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
-        return BookInstance.objects.filter(reader=self.request.user).taken().order_by_due_back()
+        return BookInstance.objects.filter(reader=self.request.user).reserved_or_taken().order_by_due_back()
+
+
+class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
+    model = BookInstance
+    template_name = 'user_book.html'
+
 
 class BookDetailView(FormMixin, generic.DetailView):
     model = Book
@@ -134,7 +149,7 @@ class BookDetailView(FormMixin, generic.DetailView):
 
     # nurodome, kur atsidursime komentaro sėkmės atveju.
     def get_success_url(self):
-        return reverse('book-detail', kwargs={'pk': self.object.id})
+        return reverse_lazy('book-detail', kwargs={'pk': self.object.id})
 
     # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
     def post(self, request, *args, **kwargs):
@@ -151,3 +166,65 @@ class BookDetailView(FormMixin, generic.DetailView):
         form.instance.reviewer = self.request.user
         form.save()
         return super(BookDetailView, self).form_valid(form)
+
+
+class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
+    model = BookInstance
+    # fields = ('book', 'due_back', )
+    form_class = BookInstanceForm
+    success_url = reverse_lazy('my-borrowed')
+    template_name = 'user_book_form.html'
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        form.instance.status = 'r'
+        messages.success(self.request, f'{_("book reserved until").capitalize()} {str(form.instance.due_back)}')
+        return super().form_valid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        book_id = self.request.GET.get('book_id')
+        if book_id:
+            initial['book'] = book_id
+        initial['due_back'] = date.today() + timedelta(days=3)
+        return initial
+
+
+class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = BookInstance
+    # fields = ('book', 'due_back', )
+    form_class = BookInstanceForm
+    success_url = reverse_lazy('my-borrowed')
+    template_name = 'user_book_form.html'
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        form.instance.status = 'p'
+        messages.success(self.request, f'{_("book taken until").capitalize()} {str(form.instance.due_back)}')
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = True
+        return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['due_back'] = date.today() + timedelta(days=7)
+        return initial
+
+    def test_func(self):
+        return self.request.user == self.get_object().reader and not self.get_object().is_overdue
+
+
+class BookByUserDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = BookInstance
+    success_url = reverse_lazy('my-borrowed')
+    template_name = 'user_book_delete.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, f'{_("book successfully returned or lost").capitalize()}')
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.request.user == self.get_object().reader

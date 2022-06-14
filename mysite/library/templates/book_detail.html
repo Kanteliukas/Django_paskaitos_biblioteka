@@ -1,6 +1,8 @@
 {% extends "base.html" %} {% block content %}
+{% load i18n %}
 <img src="{{ book.cover.url }}" style="margin-bottom: 20px;">
 <h1>{{ book.title }}</h1>
+<a class="btn btn-success float-right" href="{% url 'my-borrowed-new' %}?book_id={{ book.id }}">{% trans "reserve"|capfirst %}</a>
 
 <p><strong>Autorius:</strong> <a href="{% url 'author' book.author.pk %}">{{ book.author }}</a></p>
 <p><strong>Aprašymas:</strong> {{ book.summary }}</p>
