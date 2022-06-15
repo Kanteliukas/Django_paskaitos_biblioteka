@@ -8,211 +8,265 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-08 17:11+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2022-06-14 21:39+0300\n"
+"PO-Revision-Date: 2022-06-14 21:40+0000\n"
+"Last-Translator:   <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: library/models.py:11
+#: .\library\models.py:11
 msgid "name"
 msgstr "pavadinimas"
 
-#: library/models.py:11
+#: .\library\models.py:11
 msgid "Name of the genre (for example: detective, sci-fi, horror...)"
 msgstr "Įveskite knygos žanrą (pvz. detektyvas)"
 
-#: library/models.py:17 library/models.py:27 library/models.py:39
+#: .\library\models.py:17 .\library\models.py:27 .\library\models.py:39
 msgid "genre"
 msgstr "žanras"
 
-#: library/models.py:18
+#: .\library\models.py:18
 msgid "genres"
 msgstr "žanrai"
 
-#: library/models.py:23
+#: .\library\models.py:23
 msgid "title"
 msgstr "pavadinimas"
 
-#: library/models.py:24
+#: .\library\models.py:24
 msgid "author"
 msgstr "autorius"
 
-#: library/models.py:25 library/models.py:96
+#: .\library\models.py:25 .\library\models.py:99
 msgid "description"
 msgstr "aprašymas"
 
-#: library/models.py:25
+#: .\library\models.py:25
 msgid "Short book description"
 msgstr "Trumpas knygos aprašymas"
 
-#: library/models.py:26
+#: .\library\models.py:26
 msgid ""
-"13 symbols: <a href=\"https://www.isbn-international.org/content/what-isbn"
-"\">ISBN code</a>"
+"13 symbols: <a href=\"https://www.isbn-international.org/content/what-"
+"isbn\">ISBN code</a>"
 msgstr ""
-"13 simbolių: <a href=\"https://www.isbn-international.org/content/what-isbn"
-"\">ISBN kodas</a>"
+"13 simbolių: <a href=\"https://www.isbn-international.org/content/what-"
+"isbn\">ISBN kodas</a>"
 
-#: library/models.py:27
+#: .\library\models.py:27
 msgid "choose genre(s) for this book"
 msgstr "pasirinkite žanrą/-us šiai knygai"
 
-#: library/models.py:28
+#: .\library\models.py:28
 msgid "cover"
 msgstr "viršelis"
 
-#: library/models.py:59
+#: .\library\models.py:62
 msgid "Unique ID for each book instance"
 msgstr "Unikaslus ID kiekvienai knygos kopijai"
 
-#: library/models.py:60 library/models.py:115
+#: .\library\models.py:63 .\library\models.py:118
 msgid "book"
 msgstr "knygos"
 
-#: library/models.py:61
+#: .\library\models.py:64
 msgid "due back"
 msgstr "bus prieinama"
 
-#: library/models.py:62
+#: .\library\models.py:65
 msgid "user"
 msgstr "vartotojas"
 
-#: library/models.py:65
+#: .\library\models.py:68
 msgid "Managed"
 msgstr "Administruojama"
 
-#: library/models.py:66
+#: .\library\models.py:69
 msgid "Taken"
 msgstr "Paimta"
 
-#: library/models.py:67
+#: .\library\models.py:70
 msgid "Available"
 msgstr "Prieinama"
 
-#: library/models.py:68
+#: .\library\models.py:71
 msgid "Reserved"
 msgstr "Rezervuota"
 
-#: library/models.py:76
+#: .\library\models.py:79
 msgid "status"
 msgstr "statusas"
 
-#: library/models.py:94
+#: .\library\models.py:97
 msgid "first name"
 msgstr "vardas"
 
-#: library/models.py:95
+#: .\library\models.py:98
 msgid "last name"
 msgstr "pavardė"
 
-#: library/models.py:111 library/templates/index.html:9
+#: .\library\models.py:114 .\library\templates\index.html:9
 msgid "books"
 msgstr "knygos"
 
-#: library/models.py:116
+#: .\library\models.py:119
 msgid "reviewer"
 msgstr "skaitytojas"
 
-#: library/models.py:117
+#: .\library\models.py:120
 msgid "date created"
 msgstr "sukūrimo data"
 
-#: library/models.py:118
+#: .\library\models.py:121
 msgid "review"
 msgstr "peržiūra"
 
-#: library/templates/base.html:5
+#: .\library\templates\base.html:5
 msgid "library"
 msgstr "biblioteka"
 
-#: library/templates/base.html:23
+#: .\library\templates\base.html:23
 msgid "home"
-msgstr "padžia"
+msgstr "pradžia"
 
-#: library/templates/base.html:24
+#: .\library\templates\base.html:24
 msgid "all books"
 msgstr "visos knygos"
 
-#: library/templates/base.html:25
+#: .\library\templates\base.html:25
 msgid "all authors"
 msgstr "visi autoriai"
 
-#: library/templates/base.html:27
+#: .\library\templates\base.html:27
 msgid "my books"
 msgstr "mano knygos"
 
-#: library/templates/base.html:28
+#: .\library\templates\base.html:28
+msgid "new"
+msgstr "naujas"
+
+#: .\library\templates\base.html:29
 msgid "profile"
 msgstr "profilis"
 
-#: library/templates/base.html:29
+#: .\library\templates\base.html:30
 msgid "logout"
 msgstr "atsijungti"
 
-#: library/templates/base.html:31
+#: .\library\templates\base.html:32
 msgid "login"
 msgstr "prisijungti"
 
-#: library/templates/base.html:32
+#: .\library\templates\base.html:33
 msgid "sign up"
 msgstr "registruotis"
 
-#: library/templates/base.html:36
+#: .\library\templates\base.html:37
 msgid "search"
 msgstr "ieškoti"
 
-#: library/templates/base.html:40
+#: .\library\templates\base.html:41
 msgid "admin"
 msgstr "adminas"
 
-#: library/templates/index.html:4
+#: .\library\templates\index.html:4
 msgid "regional library"
 msgstr "rajono biblioteka"
 
-#: library/templates/index.html:5
+#: .\library\templates\index.html:5
 msgid "Welcome to book paradise"
 msgstr "Sveiki atvykę į knygų rojų!"
 
-#: library/templates/index.html:6
+#: .\library\templates\index.html:6
 msgid "we have now"
 msgstr "šiuo metu turime"
 
-#: library/templates/index.html:10
+#: .\library\templates\index.html:10
 msgid "copies"
 msgstr "egzemplioriai"
 
-#: library/templates/index.html:12
+#: .\library\templates\index.html:12
 msgid "available copies"
 msgstr "prieinami egzemplioriai"
 
-#: library/templates/index.html:13
+#: .\library\templates\index.html:13
 msgid "authors"
 msgstr "autoriai"
 
-#: library/templates/index.html:16
+#: .\library\templates\index.html:16
 #, python-format
 msgid "You're comping here for the %(num_visits)s time."
 msgstr "Jūs čia lankotės %(num_visits)s-ą kartą."
 
-#: library/views.py:85
+#: .\library\templates\user_book.html:5
+msgid "my book"
+msgstr "mano knygos"
+
+#: .\library\templates\user_book.html:9
+msgid "reader"
+msgstr "skaitytojas"
+
+#: .\library\templates\user_book.html:16
+msgid "return term"
+msgstr "grąžinimo terminas"
+
+#: .\library\templates\user_book.html:20
+msgid "take/extend"
+msgstr "paimti/pratęsti"
+
+#: .\library\templates\user_book.html:23
+#| msgid "return term"
+msgid "return/lose"
+msgstr "grąžinu/pamečiau"
+
+#: .\library\templates\user_book_delete.html:5
+#| msgid "borrowing a book"
+msgid "returning or losing a book"
+msgstr "grąžinu arba pamečiau knygą"
+
+#: .\library\templates\user_book_delete.html:7
+msgid "confirm that you are returning this book or book got lost"
+msgstr "Patvirtinkite, jog grąžinote arba pametėte knygą"
+
+#: .\library\templates\user_book_delete.html:10
+#| msgid "return term"
+msgid "return or lose"
+msgstr "grąžinu arba pamečiau"
+
+#: .\library\templates\user_book_delete.html:11
+msgid "change my mind"
+msgstr "Apsigalvojau"
+
+#: .\library\templates\user_book_form.html:5
+msgid "borrowing a book"
+msgstr "skolinama knyga"
+
+#: .\library\templates\user_book_form.html:11
+msgid "take or extend"
+msgstr "paimti arba pratęsti"
+
+#: .\library\templates\user_book_form.html:13
+msgid "reserve"
+msgstr "rezervuoti"
+
+#: .\library\views.py:87
 msgid "Slaptažodžiai nesutampa arba neįvesti."
-msgstr ""
+msgstr "Slaptažodžiai nesutampa arba neįvesti."
 
-#: library/views.py:88
+#: .\library\views.py:90
 msgid "Vartotojas {} jau egzistuoja arba neįvestas."
-msgstr ""
+msgstr "Vartotojas {} jau egzistuoja arba neįvestas."
 
-#: library/views.py:91
+#: .\library\views.py:93
 msgid "Vartotojas su el.praštu {} jau egzistuoja arba neįvestas."
-msgstr ""
+msgstr "Vartotojas su el.paštu {} jau egzistuoja arba neįvestas."
 
-#: library/views.py:97
+#: .\library\views.py:99
 msgid "Vartotojas {} užregistruotas sėkmingai. Galite prisijungti"
-msgstr ""
+msgstr "Vartotojas {} užregistruotas sėkmingai. Galite prisijungti"

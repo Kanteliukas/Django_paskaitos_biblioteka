@@ -1,24 +1,21 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<h1>Mano paimtos knygos</h1>
 
-{% block content %}
-    <h1>Mano paimtos knygos</h1>
+{% if books %}
+<ul>
 
-    {% if books %}
-    <ul>
-
-      {% for bookinst in books %}
-      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+    {% for bookinst in books %}
+    <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
         <!-- skaitytojas-->
         <a href="{% url 'my-book' bookinst.id %}">
-          <img class="rounded-circle" src="{{ bookinst.reader.profile.picture.url }}" width="50"> {{ bookinst.reader }}
+            <img class="rounded-circle" src="{{ bookinst.reader.profile.picture.url }}" width="50"> {{ bookinst.reader }} ({{ bookinst.due_back }})
         </a>
         <!-- knyga-->
-        <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})        
-      </li>
-      {% endfor %}
-    </ul>
+        <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a>
+    </li>
+    {% endfor %}
+</ul>
 
-    {% else %}
-      <p>Šiuo metu iš mūsų nesate paėmę knygų.</p>
-    {% endif %}       
-{% endblock %}
+{% else %}
+<p>Šiuo metu iš mūsų nesate paėmę knygų.</p>
+{% endif %} {% endblock %}

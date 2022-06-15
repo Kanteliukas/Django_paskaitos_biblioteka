@@ -15,123 +15,141 @@ from datetime import date, timedelta
 
 
 def index(request):
-    
+
     # # Suskaičiuokime keletą pagrindinių objektų
     # num_books = Book.objects.all().count()
     # num_instances = BookInstance.objects.all().count()
-    
+
     # # Laisvos knygos (tos, kurios turi statusą 'g')
     # num_instances_available = BookInstance.objects.filter(status__exact='g').count()
-    
-    # # Kiek yra autorių    
+
+    # # Kiek yra autorių
     # num_authors = Author.objects.count()
 
     num_books = Book.objects.all().count()
     num_instances = BookInstance.objects.all().count()
-    num_instances_available = BookInstance.objects.filter(status__exact='g').count()
+    num_instances_available = BookInstance.objects.filter(status__exact="g").count()
     num_authors = Author.objects.count()
-    
+
     # Papildome kintamuoju num_visits, įkeliame jį į kontekstą.
-    num_visits = request.session.get('num_visits', 1)
-    request.session['num_visits'] = num_visits + 1
-    
+    num_visits = request.session.get("num_visits", 1)
+    request.session["num_visits"] = num_visits + 1
+
     # perduodame informaciją į šabloną žodyno pavidale:
     context = {
-        'num_books': num_books,
-        'num_instances': num_instances,
-        'num_instances_available': num_instances_available,
-        'num_authors': num_authors,
-        'num_visits': num_visits,
+        "num_books": num_books,
+        "num_instances": num_instances,
+        "num_instances_available": num_instances_available,
+        "num_authors": num_authors,
+        "num_visits": num_visits,
     }
 
     # renderiname index.html, su duomenimis kintamąjame context
-    response = render(request, 'index.html', context=context)
+    response = render(request, "index.html", context=context)
     return response
 
 
 def authors(request):
     paginator = Paginator(Author.objects.all(), 2)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     paged_authors = paginator.get_page(page_number)
     # authors = Author.objects.all()
-    context = {
-        'authors': paged_authors
-    }
-    return render(request, 'authors.html', context=context)
+    context = {"authors": paged_authors}
+    return render(request, "authors.html", context=context)
+
 
 
 def author(request, author_id):
     single_author = get_object_or_404(Author, pk=author_id)
-    return render(request, 'author.html', {'author': single_author})
+    return render(request, "author.html", {"author": single_author})
+
 
 
 def search(request):
     """
     paprasta paieška. query ima informaciją iš paieškos laukelio,
     search_results prafiltruoja pagal įvestą tekstą knygų pavadinimus ir aprašymus.
-    Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės 
+    Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės
     didžiosios/mažosios.
     """
-    query = request.GET.get('query')
+    query = request.GET.get("query")
     query_filter = Q(title__icontains=query) | Q(summary__icontains=query)
     search_results = Book.objects.filter(query_filter)
-    return render(request, 'search.html', {'books': search_results, 'query': query})
+    return render(request, "search.html", {"books": search_results, "query": query})
+
 
 
 @csrf_protect
 def register(request):
     if request.method == "POST":
         # duomenu surinkimas
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        password2 = request.POST.get("password2")
         # validuosim forma, tikrindami ar sutampa slaptažodžiai, ar egzistuoja vartotojas
         error = False
         if not password or password != password2:
-            messages.error(request, _('Slaptažodžiai nesutampa arba neįvesti.'))
+            messages.error(request, _("Slaptažodžiai nesutampa arba neįvesti."))
             error = True
         if not username or User.objects.filter(username=username).exists():
-            messages.error(request, _('Vartotojas {} jau egzistuoja arba neįvestas.').format(username))
+            messages.error(
+                request,
+                _("Vartotojas {} jau egzistuoja arba neįvestas.").format(username),
+            )
             error = True
         if not email or User.objects.filter(email=email).exists():
-            messages.error(request, _('Vartotojas su el.praštu {} jau egzistuoja arba neįvestas.').format(email))
+            messages.error(
+                request,
+                _("Vartotojas su el.praštu {} jau egzistuoja arba neįvestas.").format(
+                    email
+                ),
+            )
             error = True
         if error:
-            return redirect('register')
+            return redirect("register")
         else:
             User.objects.create_user(username=username, email=email, password=password)
-            messages.success(request, _('Vartotojas {} užregistruotas sėkmingai. Galite prisijungti').format(username))
-            return redirect('index')
-    return render(request, 'register.html')
+            messages.success(
+                request,
+                _("Vartotojas {} užregistruotas sėkmingai. Galite prisijungti").format(
+                    username
+                ),
+            )
+            return redirect("index")
+    return render(request, "register.html")
 
 
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 2
-    template_name = 'book_list.html'    
+    template_name = "book_list.html"
     # patys galite nustatyti šablonui kintamojo vardą
-    context_object_name = 'book_list'
+    context_object_name = "book_list"
     # gauti sąrašą 3 knygų su žodžiu pavadinime 'ir'
-    # queryset = Book.objects.filter(title__icontains='ir')[:3] 
+    # queryset = Book.objects.filter(title__icontains='ir')[:3]
     # šitą jau panaudojome. Neįsivaizduojate, kokį default kelią sukuria :)
-    # template_name = 'books/my_arbitrary_template_name_list.html' 
+    # template_name = 'books/my_arbitrary_template_name_list.html'
 
     def get_queryset(self):
-        return Book.objects.all()[:3] 
+        return Book.objects.all()[:3]
 
 
-class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
     model = BookInstance
-    context_object_name = 'books'
-    template_name ='user_books.html'
+    context_object_name = "books"
+    template_name = "user_books.html"
     paginate_by = 10
-    
+
     def get_queryset(self):
         # BookInstance.objects.taken_books_read_by_me_ordered_by_due_back()
         # BookInstance.objects.taken().order_by_due_back().read_by_me()
         # BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
-        return BookInstance.objects.filter(reader=self.request.user).reserved_or_taken().order_by_due_back()
+        return (
+            BookInstance.objects.filter(reader=self.request.user)
+            .reserved_or_taken()
+            .order_by_due_back()
+        )
 
 
 class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
@@ -141,11 +159,11 @@ class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
 
 class BookDetailView(FormMixin, generic.DetailView):
     model = Book
-    template_name = 'book_detail.html'
+    template_name = "book_detail.html"
     form_class = BookReviewForm
 
     class Meta:
-        ordering = ['title']
+        ordering = ["title"]
 
     # nurodome, kur atsidursime komentaro sėkmės atveju.
     def get_success_url(self):
@@ -183,47 +201,61 @@ class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        book_id = self.request.GET.get('book_id')
+        book_id = self.request.GET.get("book_id")
         if book_id:
-            initial['book'] = book_id
-        initial['due_back'] = date.today() + timedelta(days=3)
+            initial["book"] = book_id
+        initial["due_back"] = date.today() + timedelta(days=3)
         return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["book"] = Book.objects.get(id=self.request.GET.get('book_id'))
+        return context
 
 
 class BookByUserUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = BookInstance
     # fields = ('book', 'due_back', )
     form_class = BookInstanceForm
-    success_url = reverse_lazy('my-borrowed')
-    template_name = 'user_book_form.html'
+    success_url = reverse_lazy("my-borrowed")
+    template_name = "user_book_form.html"
 
     def form_valid(self, form):
         form.instance.reader = self.request.user
-        form.instance.status = 'p'
-        messages.success(self.request, f'{_("book taken until").capitalize()} {str(form.instance.due_back)}')
+        form.instance.status = "p"
+        messages.success(
+            self.request,
+            f'{_("book taken until").capitalize()} {str(form.instance.due_back)}',
+        )
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_update'] = True
+        context["is_update"] = True
+        context["book"] = self.get_object().book
         return context
 
     def get_initial(self):
         initial = super().get_initial()
-        initial['due_back'] = date.today() + timedelta(days=7)
+        initial["due_back"] = date.today() + timedelta(days=7)
         return initial
 
     def test_func(self):
-        return self.request.user == self.get_object().reader and not self.get_object().is_overdue
+        return (
+            self.request.user == self.get_object().reader
+            and not self.get_object().is_overdue
+        )
 
 
 class BookByUserDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = BookInstance
-    success_url = reverse_lazy('my-borrowed')
-    template_name = 'user_book_delete.html'
+    success_url = reverse_lazy("my-borrowed")
+    template_name = "user_book_delete.html"
 
     def form_valid(self, form):
-        messages.success(self.request, f'{_("book successfully returned or lost").capitalize()}')
+        messages.success(
+            self.request, f'{_("book successfully returned or lost").capitalize()}'
+        )
         return super().form_valid(form)
 
     def test_func(self):
